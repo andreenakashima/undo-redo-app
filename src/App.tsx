@@ -1,6 +1,20 @@
+import { useState } from "react";
+
+interface ListProps {
+	clientX: number;
+	clientY: number;
+}
+
 export function App() {
-	function handleClick(event) {
-		console.log(event);
+	const [list, setList] = useState<ListProps[]>([]);
+
+	function handleClick(event: React.MouseEvent) {
+		const newDot = {
+			clientX: event.clientX,
+			clientY: event.clientY,
+		};
+
+		setList((prev) => [...prev, newDot]);
 	}
 
 	return (
@@ -8,7 +22,12 @@ export function App() {
 			className="w-screen h-screen bg-slate-200 relative"
 			onClick={handleClick}
 		>
-			<span className="absolute top-32 left-32 w-2 h-2 block  bg-red-800 rounded-full" />
+			{list.map((item) => (
+				<span
+					style={{ top: item.clientY, left: item.clientX }}
+					className="absolute w-2 h-2 block bg-red-800 rounded-full"
+				/>
+			))}
 		</div>
 	);
 }
